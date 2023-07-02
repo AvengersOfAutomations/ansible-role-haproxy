@@ -1,0 +1,17 @@
+vrrp_instance VI_1 {
+    interface {{ float_ip_interface }}
+    state {{ vrrp_state }}
+    priority {{ vrrp_priority }}
+    virtual_router_id {{ float_ip_virtual_router_id }}
+
+    authentication {
+        auth_type AH
+        auth_pass {{ float_ip_auth_pass }}
+    }
+
+    virtual_ipaddress {
+        {% for float_ip in float_ips %}
+            {{float_ip}}
+        {% endfor %}
+    }
+}

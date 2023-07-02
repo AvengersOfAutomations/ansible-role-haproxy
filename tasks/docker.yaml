@@ -1,0 +1,31 @@
+- name: Uninstall old versions
+  apt:
+    name: [docker, docker-engine, docker.io, containerd, runc]
+    state: absent
+
+- name: Update packages && install packages to allow apt to use a repository over HTTPS
+  apt:
+    name: [ca-certificates, curl, gnupg]
+    update_cache: yes
+    state: present
+
+- name: Add Docker GPG apt Key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add Docker Repository
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu focal stable
+    state: present
+
+- name: Update packages and Install docker,containerd,compose
+  apt:
+    name: [docker-ce, docker-ce-cli, containerd.io, docker-buildx-plugin, docker-compose-plugin]
+    update_cache: yes
+
+- name: Start and enable docker
+  systemd:
+    name: docker.service
+    state: started
+    enabled: true

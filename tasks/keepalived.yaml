@@ -1,0 +1,12 @@
+- name: install keepalived
+  apt:
+    name: [keepalived]
+    state: present
+
+- name: copy keepalived
+  template:
+    src: keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+    mode: 0644
+  notify:
+    - keepalived restart

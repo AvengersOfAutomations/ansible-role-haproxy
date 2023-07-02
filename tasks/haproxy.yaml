@@ -1,0 +1,20 @@
+- name: Create Directory in opt
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - '{{ haproxy_home_dir }}'
+    - '{{ haproxy_home_dir }}/config'
+
+- name: Add docker-compose and config toml files
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  loop:
+    - src: docker-compose.yaml.j2
+      dest: '{{ haproxy_home_dir }}/docker-compose.yaml'
+    - src: haproxy.cfg.j2
+      dest: '{{ haproxy_home_dir }}/config/haproxy.cfg'
+
+- name: Run docker compose
+  command: chdir='{{ haproxy_home_dir }}' docker compose up -d
