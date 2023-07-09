@@ -28,9 +28,9 @@ float_ip_auth_pass: 141a653b895287bf9
 float_ip_virtual_router_id: 56
 float_ip_interface: ens192
 float_ips:
-    - "45.94.255.4/27"
-    - "45.94.255.6/32"
-    - "45.94.255.18/32"
+    - "84.106.57.166/27"
+    - "84.106.57.167/32"
+    - "84.106.57.168/32"
 
 ### Sysctl Config
 # Enable IP forwarding
