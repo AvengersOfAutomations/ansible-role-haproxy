@@ -1,13 +1,29 @@
-# Install and configure these tools
+### Install and configure these tools
 docker: true
 haproxy: true
 keepalived: true
+sysctl_tuning: true
 
-# Haproxy Config
+### Haproxy Config
 haproxy_home_dir: /opt/haproxy
 haproxy_image_version: 2.8
+haproxy_dashboard_user: admin
+haproxy_dashboard_password: admin
+haproxy_maxconn: 300000
+haproxy_timeout_connect: 5000
+haproxy_timeout_client: 50000
+haproxy_timeout_server: 50000
+haproxy_monitoring_config_port: 9090
+haproxy_health_check_port: 8888
+haproxy_monitoring_config_uri: /haproxy?stats
+haproxy_monitoring_config_refresh: 10s
+haproxy_monitoring_config_maxconn: 100
+haproxy_monitoring_config_timeout_client: 300s
+haproxy_monitoring_config_timeout_server: 300s
+haproxy_monitoring_config_timeout_connect: 300s
+haproxy_monitoring_config_timeout_queue: 300s
 
-# Keepalived Config
+### Keepalived Config
 float_ip_auth_pass: 141a653b895287bf9
 float_ip_virtual_router_id: 56
 float_ip_interface: ens192
@@ -15,3 +31,49 @@ float_ips:
     - "45.94.255.4/27"
     - "45.94.255.6/32"
     - "45.94.255.18/32"
+
+### Sysctl Config
+# Enable IP forwarding
+net_ipv4_ip_forward: 1
+# Disable IPv6 for all network interfaces
+net_ipv6_conf_all_disable_ipv6: 1
+# Disable IPv6 for the default network interface
+net_ipv6_conf_default_disable_ipv6: 1
+# Set the range of local ports for outgoing connections
+net_ipv4_ip_local_port_range: 32768 60999
+# Set the default queuing discipline to Fair Queueing
+net_core_default_qdisc: fq
+# Set TCP congestion control algorithm to BBR
+net_ipv4_tcp_congestion_control: bbr
+# Set the maximum number of file handles
+fs_file_max: 1000000
+# Set the maximum receive socket buffer size
+net_core_rmem_max: 104857600
+# Set the maximum send socket buffer size
+net_core_wmem_max: 104857600
+# Enable TCP window scaling
+net_ipv4_tcp_window_scaling: 1
+ # Set TCP receive buffer sizes
+net_ipv4_tcp_rmem: 4096 87380 67108864
+# Set TCP send buffer sizes
+net_ipv4_tcp_wmem: 4096 65536 67108864
+# Enable TCP Selective Acknowledgment (SACK)
+net_ipv4_tcp_sack: 1
+# Enable TCP timestamps
+net_ipv4_tcp_timestamps: 1
+# Set the maximum number of TCP Time-Wait buckets
+net_ipv4_tcp_max_tw_buckets: 2000000
+# Set TCP memory thresholds
+net_ipv4_tcp_mem: 26214400 52428800 104857600
+# Set the default receive socket buffer size
+net_core_rmem_default: 26214400
+# Set the default send socket buffer size
+net_core_wmem_default: 26214400
+# Enable TCP Fast Open
+net_ipv4_tcp_fastopen: 3
+# Set the maximum number of pending connections
+net_core_somaxconn: 65535
+# Set the maximum number of pending TCP SYN requests
+net_ipv4_tcp_max_syn_backlog: 65535
+# Set the maximum number of queued packets on network interfaces
+net_core_netdev_max_backlog: 16384

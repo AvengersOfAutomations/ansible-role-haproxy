@@ -1,14 +1,19 @@
-- name: install docker, compose
+- name: Install docker, compose
   import_tasks: docker.yaml
   when: docker == true
   tags: [ docker ]
 
-- name: install and configure haproxy
+- name: Install and configure haproxy
   import_tasks: haproxy.yaml
   when: haproxy == true
   tags: [ haproxy ]
 
-- name: install and configure keepalived
+- name: Install and configure keepalived
   import_tasks: keepalived.yaml
   when: keepalived == true
   tags: [ keepalived ]
+
+- name: Configure sysctl parameters for tuning
+  import_tasks: sysctl.yaml
+  when: sysctl_tuning == true
+  tags: [ sysctl_tuning ]
