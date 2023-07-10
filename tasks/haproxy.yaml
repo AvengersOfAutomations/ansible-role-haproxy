@@ -1,20 +1,42 @@
-- name: Create Directory in opt
-  file:
-    path: "{{ item }}"
-    state: directory
-  with_items:
-    - '{{ haproxy_home_dir }}'
-    - '{{ haproxy_home_dir }}/config'
+- block:
+    - name: Create Directory in opt
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - '{{ haproxy_home_dir }}'
+        - '{{ haproxy_home_dir }}/config'
 
-- name: Add docker-compose and config toml files
-  template:
-    src: '{{ item.src }}'
-    dest: '{{ item.dest }}'
-  loop:
-    - src: docker-compose.yaml.j2
-      dest: '{{ haproxy_home_dir }}/docker-compose.yaml'
-    - src: haproxy.cfg.j2
-      dest: '{{ haproxy_home_dir }}/config/haproxy.cfg'
+    - name: Add docker-compose and config toml files
+      template:
+        src: '{{ item.src }}'
+        dest: '{{ item.dest }}'
+      loop:
+        - src: docker-compose.yaml.j2
+          dest: '{{ haproxy_home_dir }}/docker-compose.yaml'
+        - src: haproxy.cfg.j2
+          dest: '{{ haproxy_home_dir }}/config/haproxy.cfg'
 
-- name: Run docker compose
-  command: chdir='{{ haproxy_home_dir }}' docker compose up -d
+    - name: Run docker compose
+      command: chdir='{{ haproxy_home_dir }}' docker compose up -d
+  when: haproxy_install_type == 'docker-compose'
+
+- block:
+    - name: Add HAProxy repository key
+      ansible.builtin.apt_repository:
+        repo: ppa:vbernat/haproxy-{{haproxy_version}}
+        update_cache: yes
+        
+    - name: Install HAProxy
+      apt:
+        name: haproxy
+        state: latest
+        
+    - name: Copy HAProxy configuration in place.
+      template:
+        src: haproxy.cfg.j2
+        dest: /etc/haproxy/haproxy.cfg
+        mode: 0644
+        validate: haproxy -f %s -c -q
+      notify: haproxy restart
+  when: haproxy_install_type == 'service'

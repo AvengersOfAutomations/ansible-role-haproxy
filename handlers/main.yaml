@@ -3,3 +3,8 @@
     state: restarted
     enabled: yes
     name: keepalived.service
+
+- name: haproxy restart
+  service:
+    state: restarted
+    name: haproxy

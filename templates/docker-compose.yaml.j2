@@ -1,10 +1,9 @@
 version: "3.9"
 services:
     haproxy:
-        image: haproxy:{{ haproxy_image_version }}
+        image: haproxy:{{ haproxy_version }}
         volumes:
-            - ./config:/haproxy-override
-            - ./config/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
-        ports:
-            - "80:80"
-            - "70:70"
+            - ./config:/usr/local/etc/haproxy:ro
+        network_mode: host
+        user: root
+        restart: always

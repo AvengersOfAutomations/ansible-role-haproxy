@@ -4,6 +4,7 @@
     value: '{{ item.value }}'
     state: present
     sysctl_file: /etc/sysctl.conf
+    reload: true
   loop:
     - name: net.ipv4.ip_forward
       value: '{{net_ipv4_ip_forward}}'  # Enable IP forwarding

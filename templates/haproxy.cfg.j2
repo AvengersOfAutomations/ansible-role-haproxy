@@ -1,18 +1,12 @@
 global
-	log /dev/log	local0
-	log /dev/log	local1 notice
-	chroot /var/lib/haproxy
-        stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
-        #stats timeout 30s
+	chroot {{haproxy_chroot}}
+        log stdout format raw local0
 	user {{haproxy_user}}
 	group {{haproxy_group}}
-	daemon
         maxconn {{haproxy_maxconn}}
 
 defaults
-	#log	global
 	mode	tcp
-	#option	tcplog
         timeout connect {{haproxy_timeout_connect}}
         timeout client  {{haproxy_timeout_client}}
         timeout server  {{haproxy_timeout_server}}
@@ -25,14 +19,13 @@ listen health_check_http_url
     mode http
     monitor-uri /healthz
 
-
 #---------------------------------------------------------------------
 # Monitoring Configuration
 #---------------------------------------------------------------------
 listen  stats
         bind *:{{haproxy_monitoring_config_port}}
         mode            http
-        log             global
+        #log             global
         maxconn {{haproxy_monitoring_config_maxconn}}
         timeout client  {{haproxy_monitoring_config_timeout_client}}
         timeout server  {{haproxy_monitoring_config_timeout_server}}
@@ -44,3 +37,4 @@ listen  stats
         stats show-node
         stats auth {{haproxy_dashboard_user}}:{{haproxy_dashboard_password}}
         stats uri  {{haproxy_monitoring_config_uri}}
+        http-request use-service prometheus-exporter if { path /metrics }

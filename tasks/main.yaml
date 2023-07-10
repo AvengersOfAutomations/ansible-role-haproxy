@@ -3,6 +3,11 @@
   when: docker == true
   tags: [ docker ]
 
+- name: Configure sysctl parameters for tuning
+  import_tasks: sysctl.yaml
+  when: sysctl_tuning == true
+  tags: [ sysctl_tuning ]
+
 - name: Install and configure haproxy
   import_tasks: haproxy.yaml
   when: haproxy == true
@@ -12,8 +17,3 @@
   import_tasks: keepalived.yaml
   when: keepalived == true
   tags: [ keepalived ]
-
-- name: Configure sysctl parameters for tuning
-  import_tasks: sysctl.yaml
-  when: sysctl_tuning == true
-  tags: [ sysctl_tuning ]
