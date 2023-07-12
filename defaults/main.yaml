@@ -28,14 +28,20 @@ haproxy_monitoring_config_timeout_connect: 300s
 haproxy_monitoring_config_timeout_queue: 300s
 
 ### Keepalived Config
-float_ip_auth_pass: 141a653b895287bf9
-float_ip_virtual_router_id: 56
-float_ip_interface: ens192
-float_auth_type: PASS
-float_ips:
-    - "84.106.57.166/27"
-    - "84.106.57.167/32"
-    - "84.106.57.168/32"
+vrrp_auth_type: PASS
+vrrp_instances:
+  - vrrp_instance_name: VI_1
+    virtual_ipaddress: "84.106.57.166/27"
+    virtual_router_id: "56"
+    auth_password: "141a653b895287bf9"
+  - vrrp_instance_name: VI_2
+    virtual_ipaddress: "84.106.57.167/32"
+    virtual_router_id: "57"
+    auth_password: "141a653b895287ff9"
+  - vrrp_instance_name: VI_3
+    virtual_ipaddress: "84.106.57.168/32"
+    virtual_router_id: "58"
+    auth_password: "141a653b895287vf9"
 
 ### Sysctl Config
 # Enable IP forwarding

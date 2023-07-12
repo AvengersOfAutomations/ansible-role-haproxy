@@ -4,24 +4,26 @@ vrrp_script chk_haproxy {
     weight 2
 }
 
-vrrp_instance VI_1 {
-    interface {{ float_ip_interface }}
+{% for vrrp_instance in vrrp_instances %}
+
+vrrp_instance {{vrrp_instance.vrrp_instance_name}} {
+    interface {{ vrrp_ip_interface }}
     state {{ vrrp_state }}
     priority {{ vrrp_priority }}
-    virtual_router_id {{ float_ip_virtual_router_id }}
+    virtual_router_id {{ vrrp_instance.virtual_router_id }}
 
     authentication {
-        auth_type {{ float_auth_type }}
-        auth_pass {{ float_ip_auth_pass }}
+        auth_type {{ vrrp_auth_type }}
+        auth_pass {{ vrrp_instance.auth_password }}
     }
 
     virtual_ipaddress {
-    {% for float_ip in float_ips %}
-        {{float_ip}}
-    {% endfor %}
+    {{vrrp_instance.virtual_ipaddress}}
     }
 
     track_script {
         chk_haproxy
     }
 }
+
+{% endfor %}
