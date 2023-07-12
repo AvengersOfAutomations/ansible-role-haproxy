@@ -1,3 +1,8 @@
+vrrp_script chk_haproxy {
+    script "pidof haproxy"
+    interval 2
+}
+
 vrrp_instance VI_1 {
     interface {{ float_ip_interface }}
     state {{ vrrp_state }}
@@ -10,8 +15,12 @@ vrrp_instance VI_1 {
     }
 
     virtual_ipaddress {
-        {% for float_ip in float_ips %}
-            {{float_ip}}
-        {% endfor %}
+    {% for float_ip in float_ips %}
+        {{float_ip}}
+    {% endfor %}
+    }
+
+    track_script {
+        chk_haproxy
     }
 }
