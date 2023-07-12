@@ -1,6 +1,7 @@
 vrrp_script chk_haproxy {
-    script "pidof haproxy"
+    script "/usr/bin/pidof haproxy"
     interval 2
+    weight 2
 }
 
 vrrp_instance VI_1 {
@@ -10,7 +11,7 @@ vrrp_instance VI_1 {
     virtual_router_id {{ float_ip_virtual_router_id }}
 
     authentication {
-        auth_type AH
+        auth_type {{ float_auth_type }}
         auth_pass {{ float_ip_auth_pass }}
     }
 

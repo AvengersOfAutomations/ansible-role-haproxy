@@ -31,6 +31,7 @@ haproxy_monitoring_config_timeout_queue: 300s
 float_ip_auth_pass: 141a653b895287bf9
 float_ip_virtual_router_id: 56
 float_ip_interface: ens192
+float_auth_type: PASS
 float_ips:
     - "84.106.57.166/27"
     - "84.106.57.167/32"
