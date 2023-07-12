@@ -1,5 +1,5 @@
 vrrp_script chk_haproxy {
-    script "/usr/bin/pidof haproxy"
+    script "killall -0 haproxy"
     interval 2
     weight 2
 }
