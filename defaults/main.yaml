@@ -44,47 +44,48 @@ vrrp_instances:
     auth_password: "141a653b895287vf9"
 
 ### Sysctl Config
-# Enable IP forwarding
-net_ipv4_ip_forward: 1
-# Disable IPv6 for all network interfaces
-net_ipv6_conf_all_disable_ipv6: 1
-# Disable IPv6 for the default network interface
-net_ipv6_conf_default_disable_ipv6: 1
-# Set the range of local ports for outgoing connections
-net_ipv4_ip_local_port_range: 32768 60999
-# Set the default queuing discipline to Fair Queueing
-net_core_default_qdisc: fq
-# Set TCP congestion control algorithm to BBR
-net_ipv4_tcp_congestion_control: bbr
-# Set the maximum number of file handles
-fs_file_max: 1000000
-# Set the maximum receive socket buffer size
-net_core_rmem_max: 104857600
-# Set the maximum send socket buffer size
-net_core_wmem_max: 104857600
-# Enable TCP window scaling
-net_ipv4_tcp_window_scaling: 1
- # Set TCP receive buffer sizes
-net_ipv4_tcp_rmem: 4096 87380 67108864
-# Set TCP send buffer sizes
-net_ipv4_tcp_wmem: 4096 65536 67108864
-# Enable TCP Selective Acknowledgment (SACK)
-net_ipv4_tcp_sack: 1
-# Enable TCP timestamps
-net_ipv4_tcp_timestamps: 1
-# Set the maximum number of TCP Time-Wait buckets
-net_ipv4_tcp_max_tw_buckets: 2000000
-# Set TCP memory thresholds
-net_ipv4_tcp_mem: 26214400 52428800 104857600
-# Set the default receive socket buffer size
-net_core_rmem_default: 26214400
-# Set the default send socket buffer size
-net_core_wmem_default: 26214400
-# Enable TCP Fast Open
-net_ipv4_tcp_fastopen: 3
-# Set the maximum number of pending connections
-net_core_somaxconn: 65535
-# Set the maximum number of pending TCP SYN requests
-net_ipv4_tcp_max_syn_backlog: 65535
-# Set the maximum number of queued packets on network interfaces
-net_core_netdev_max_backlog: 16384
+sysctl_config:
+  - name: net.ipv4.ip_forward  # Enable IP forwarding
+    value: 1
+  - name: net.ipv6.conf.all.disable_ipv6 # Disable IPv6 for all network interfaces
+    value: 1 
+  - name: net.ipv6.conf.default.disable_ipv6 # Disable IPv6 for the default network interface
+    value: 1  
+  - name: net.ipv4.ip_local_port_range # Set the range of local ports for outgoing connections
+    value: 32768 60999  
+  - name: net.core.default_qdisc # Set the default queuing discipline to Fair Queueing
+    value: fq  
+  - name: net.ipv4.tcp_congestion_control # Set TCP congestion control algorithm to BBR
+    value: bbr
+  - name: fs.file-max # Set the maximum number of file handles
+    value: 1000000
+  - name: net.core.rmem_max # Set the maximum receive socket buffer size
+    value: 104857600
+  - name: net.core.wmem_max # Set the maximum send socket buffer size
+    value: 104857600  
+  - name: net.ipv4.tcp_window_scaling # Enable TCP window scaling
+    value: 1  
+  - name: net.ipv4.tcp_rmem # Set TCP receive buffer sizes
+    value: 4096 87380 67108864  
+  - name: net.ipv4.tcp_wmem # Set TCP send buffer sizes
+    value: 4096 65536 67108864  
+  - name: net.ipv4.tcp_sack # Enable TCP Selective Acknowledgment (SACK)
+    value: 1  
+  - name: net.ipv4.tcp_timestamps # Enable TCP timestamps
+    value: 1  
+  - name: net.ipv4.tcp_max_tw_buckets # Set the maximum number of TCP Time-Wait buckets
+    value: 2000000  
+  - name: net.ipv4.tcp_mem # Set TCP memory thresholds
+    value: 26214400 52428800 104857600
+  - name: net.core.rmem_default # Set the default receive socket buffer size
+    value: 26214400 
+  - name: net.core.wmem_default # Set the default send socket buffer size
+    value: 26214400  
+  - name: net.ipv4.tcp_fastopen # Enable TCP Fast Open
+    value: 3  
+  - name: net.core.somaxconn # Set the maximum number of pending connections
+    value: 65535  
+  - name: net.ipv4.tcp_max_syn_backlog # Set the maximum number of pending TCP SYN requests
+    value: 65535  
+  - name: net.core.netdev_max_backlog # Set the maximum number of queued packets on network interfaces
+    value: 16384
