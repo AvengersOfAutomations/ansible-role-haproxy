@@ -1,3 +1,13 @@
+- name: Check if HAProxy is installed
+  command: haproxy -v
+  register: haproxy_version
+  ignore_errors: true
+
+- name: Set HAProxy installation status
+  set_fact:
+    haproxy_installed: "{{ haproxy_version.rc == 0 }}"
+  when: haproxy_version.stdout is defined
+
 - block:
     - name: Create Directory in opt
       file:
@@ -6,6 +16,7 @@
       with_items:
         - '{{ haproxy_global.home_dir }}'
         - '{{ haproxy_global.home_dir }}/config'
+      when: haproxy_installed == false
 
     - name: Add docker-compose and config toml files
       template:
@@ -22,15 +33,17 @@
   when: haproxy_install_type == 'docker-compose'
 
 - block:
-    - name: Add HAProxy repository key
-      ansible.builtin.apt_repository:
-        repo: ppa:vbernat/haproxy-{{haproxy_global.version}}
-        update_cache: yes
-        
-    - name: Install HAProxy
-      apt:
-        name: haproxy
-        state: latest
+    - block:
+        - name: Add HAProxy repository key
+          ansible.builtin.apt_repository:
+            repo: ppa:vbernat/haproxy-{{haproxy_global.version}}
+            update_cache: yes
+            
+        - name: Install HAProxy
+          apt:
+            name: haproxy
+            state: latest
+      when: haproxy_installed == false
         
     - name: Copy HAProxy configuration in place.
       template:

@@ -15,7 +15,7 @@ keepalived_exporter: true
 ```
 
 ### Haproxy Config
-Haproxy cloud install with docker container or linux service
+Haproxy could install with docker container or linux service
 
 ```yaml
 haproxy_install_type: service # service / docker-compose

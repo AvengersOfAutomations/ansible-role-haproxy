@@ -1,7 +1,18 @@
+- name: Check if Keepalived is installed
+  command: keepalived -v
+  register: keepalived_version
+  ignore_errors: true
+
+- name: Set Keepalived installation status
+  set_fact:
+    keepalived_installed: "{{ keepalived_version.rc == 0 }}"
+  when: keepalived_version.stdout is defined
+
 - name: install keepalived
   apt:
     name: [keepalived]
     state: present
+  when: keepalived_version == false
 
 - name: copy keepalived
   template:
@@ -14,16 +25,29 @@
 #---------------------------------------------------------------------
 ### Keepalived Exporter
 #---------------------------------------------------------------------
-- block:
-    - name: Download keepalived-exporter package
-      get_url:
-        url: https://github.com/mehdy/keepalived-exporter/releases/download/v{{keepalived_exporter_config.version}}/keepalived-exporter-{{keepalived_exporter_config.version}}.linux-amd64.deb
-        dest: /tmp/keepalived-exporter-{{keepalived_exporter_config.version}}.linux-amd64.deb
 
-    - name: Install keepalived-exporter package
-      become: true
-      apt:
-        deb: /tmp/keepalived-exporter-{{keepalived_exporter_config.version}}.linux-amd64.deb
+- name: Check if Keepalived exporter is installed
+  command: which keepalived-exporter
+  register: keepalived_exporter_path
+  changed_when: false
+
+- name: Set Keepalived exporter installation status
+  set_fact:
+    keepalived_exporter_installed: "{{ keepalived_exporter_path.rc == 0 }}"
+  when: keepalived_exporter_path.stdout is defined
+
+- block:
+    - block:
+        - name: Download keepalived-exporter package
+          get_url:
+            url: https://github.com/mehdy/keepalived-exporter/releases/download/v{{keepalived_exporter_config.version}}/keepalived-exporter-{{keepalived_exporter_config.version}}.linux-amd64.deb
+            dest: /tmp/keepalived-exporter-{{keepalived_exporter_config.version}}.linux-amd64.deb
+
+        - name: Install keepalived-exporter package
+          become: true
+          apt:
+            deb: /tmp/keepalived-exporter-{{keepalived_exporter_config.version}}.linux-amd64.deb
+      when: keepalived_exporter_installed == false
 
     - name: copy keepalived exporter
       template:
