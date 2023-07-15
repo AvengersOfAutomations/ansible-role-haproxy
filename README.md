@@ -10,6 +10,8 @@ docker: true
 haproxy: true
 keepalived: true
 sysctl_tuning: true
+haproxy_exporter: true
+keepalived_exporter: true
 ```
 
 ### Haproxy Config
