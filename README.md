@@ -80,6 +80,14 @@ vrrp_instances:
     auth_password: "141a653b895287vf9"
 ```
 
+### Keepalived Prometheus Exporter Config
+```yaml
+keepalived_exporter_config:
+  version: 1.3.0
+  port: 9165
+  path: /metrics
+```
+
 ### Sysctl Config
 Dynamically Add/Remove sysctl parameters
 ```yaml
