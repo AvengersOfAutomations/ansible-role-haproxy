@@ -19,7 +19,7 @@ Haproxy cloud install with docker container or linux service
 haproxy_install_type: service # service / docker-compose
 haproxy_health_check_port: 8888
 # Golabal configs
-haproxy_config:
+haproxy_global:
   user: haproxy
   group: haproxy
   chroot: /var/lib/haproxy

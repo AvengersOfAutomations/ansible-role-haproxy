@@ -1,9 +1,9 @@
 global
-	chroot {{haproxy_config.chroot}}
+	chroot {{haproxy_global.chroot}}
         log stdout format raw local0
-	user {{haproxy_config.user}}
-	group {{haproxy_config.group}}
-        maxconn {{haproxy_config.maxconn}}
+	user {{haproxy_global.user}}
+	group {{haproxy_global.group}}
+        maxconn {{haproxy_global.maxconn}}
 
 defaults
 	mode	tcp
