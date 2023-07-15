@@ -37,4 +37,6 @@ listen  stats
         stats show-node
         stats auth {{haproxy_dashboard.user}}:{{haproxy_dashboard.password}}
         stats uri  {{haproxy_monitoring_config.uri}}
+{% if haproxy_exporter %}
         http-request use-service prometheus-exporter if { path /metrics }
+{% endif %}

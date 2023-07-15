@@ -8,3 +8,10 @@
   service:
     state: restarted
     name: haproxy
+
+- name: keepalived-exporter restart
+  systemd:
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+    name: keepalived-exporter.service

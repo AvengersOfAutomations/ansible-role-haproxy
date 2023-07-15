@@ -1,0 +1,11 @@
+[Unit]
+Description=keepalived-exporter
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=keepalived-exporter -web.listen-address :{{keepalived_exporter_config.port}} -web.telemetry-path "{{keepalived_exporter_config.path}}"
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

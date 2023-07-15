@@ -5,6 +5,8 @@ docker: true
 haproxy: true
 keepalived: true
 sysctl_tuning: true
+haproxy_exporter: true
+keepalived_exporter: true
 
 #---------------------------------------------------------------------
 ### Haproxy Config
@@ -70,6 +72,11 @@ vrrp_instances:
     virtual_router_id: "58"
     auth_password: "141a653b895287vf9"
 
+keepalived_exporter_config:
+  version: 1.3.0
+  port: 9165
+  path: /metrics
+  
 #---------------------------------------------------------------------
 ### Sysctl Config
 #---------------------------------------------------------------------
