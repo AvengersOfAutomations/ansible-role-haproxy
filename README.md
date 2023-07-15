@@ -3,7 +3,7 @@
 ## Roles Variables
 
 ### Install and Configure Option
-choose which tools install on your host
+Choose which tools install on your host
 
 ```yaml
 docker: true
@@ -17,26 +17,40 @@ Haproxy cloud install with docker container or linux service
 
 ```yaml
 haproxy_install_type: service # service / docker-compose
-haproxy_user: haproxy
-haproxy_group: haproxy
-haproxy_chroot: /var/lib/haproxy
-haproxy_home_dir: /opt/haproxy
-haproxy_version: 2.8
-haproxy_dashboard_user: admin
-haproxy_dashboard_password: admin
-haproxy_maxconn: 300000
-haproxy_timeout_connect: 5000
-haproxy_timeout_client: 50000
-haproxy_timeout_server: 50000
-haproxy_monitoring_config_port: 9090
 haproxy_health_check_port: 8888
-haproxy_monitoring_config_uri: /haproxy?stats
-haproxy_monitoring_config_refresh: 10s
-haproxy_monitoring_config_maxconn: 100
-haproxy_monitoring_config_timeout_client: 300s
-haproxy_monitoring_config_timeout_server: 300s
-haproxy_monitoring_config_timeout_connect: 300s
-haproxy_monitoring_config_timeout_queue: 300s
+# Golabal configs
+haproxy_config:
+  user: haproxy
+  group: haproxy
+  chroot: /var/lib/haproxy
+  home_dir: /opt/haproxy
+  version: 2.8
+  maxconn: 300000
+# dashboard config
+haproxy_dashboard:
+  user: admin
+  password: admin
+# Haproxy timeout configs
+haproxy_timeout:
+  connect: 5000
+  client: 50000
+  server: 50000
+# Haproxy monitoring configs
+haproxy_monitoring_config:
+  port: 9090
+  uri: /haproxy?stats
+  refresh: 10s
+  maxconn: 100
+  timeout:
+    client: 300s
+    server: 300s
+    connect: 300s
+    queue: 300s
+# Haproxy logging configs
+haproxy_logging:
+  driver: json-file
+  maxfile: '3'
+  maxsize: 100m
 ```
 
 ### Keepalived Config
@@ -44,6 +58,13 @@ Dynamically Add/Remove VRRP Instances
 
 ```yaml
 vrrp_auth_type: PASS
+
+# vrrp health check haproxy config
+vrrp_script_chk_haproxy: 
+  script: "killall -0 haproxy"
+  interval: 2
+  weight: 2
+
 vrrp_instances:
   - vrrp_instance_name: VI_1
     virtual_ipaddress: "84.106.57.166/27"
@@ -86,7 +107,7 @@ sysctl_config:
 
 ## Playbook
 
-install.yaml file
+**install.yaml** file
 
 ```yaml
 - name: install-haproxy
@@ -99,7 +120,7 @@ install.yaml file
 
 ### Inventory
 
-inventory.ini file
+**inventory.ini** file
 ```ini
 [haproxy]
 10.100.177.5 vrrp_state=MASTER vrrp_priority=101 vrrp_ip_interface=ens192

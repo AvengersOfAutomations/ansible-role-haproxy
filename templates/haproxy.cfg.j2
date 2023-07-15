@@ -1,15 +1,15 @@
 global
-	chroot {{haproxy_chroot}}
+	chroot {{haproxy_config.chroot}}
         log stdout format raw local0
-	user {{haproxy_user}}
-	group {{haproxy_group}}
-        maxconn {{haproxy_maxconn}}
+	user {{haproxy_config.user}}
+	group {{haproxy_config.group}}
+        maxconn {{haproxy_config.maxconn}}
 
 defaults
 	mode	tcp
-        timeout connect {{haproxy_timeout_connect}}
-        timeout client  {{haproxy_timeout_client}}
-        timeout server  {{haproxy_timeout_server}}
+        timeout connect {{haproxy_timeout.connect}}
+        timeout client  {{haproxy_timeout.client}}
+        timeout server  {{haproxy_timeout.server}}
 
 #---------------------------------------------------------------------
 # health check
@@ -23,18 +23,18 @@ listen health_check_http_url
 # Monitoring Configuration
 #---------------------------------------------------------------------
 listen  stats
-        bind *:{{haproxy_monitoring_config_port}}
+        bind *:{{haproxy_monitoring_config.port}}
         mode            http
         #log             global
-        maxconn {{haproxy_monitoring_config_maxconn}}
-        timeout client  {{haproxy_monitoring_config_timeout_client}}
-        timeout server  {{haproxy_monitoring_config_timeout_server}}
-        timeout connect {{haproxy_monitoring_config_timeout_connect}}
-        timeout queue   {{haproxy_monitoring_config_timeout_queue}}
+        maxconn {{haproxy_monitoring_config.maxconn}}
+        timeout client  {{haproxy_monitoring_config.timeout.client}}
+        timeout server  {{haproxy_monitoring_config.timeout.server}}
+        timeout connect {{haproxy_monitoring_config.timeout.connect}}
+        timeout queue   {{haproxy_monitoring_config.timeout.queue}}
         stats enable
         stats hide-version
-        stats refresh {{haproxy_monitoring_config_refresh}}
+        stats refresh {{haproxy_monitoring_config.refresh}}
         stats show-node
-        stats auth {{haproxy_dashboard_user}}:{{haproxy_dashboard_password}}
-        stats uri  {{haproxy_monitoring_config_uri}}
+        stats auth {{haproxy_dashboard.user}}:{{haproxy_dashboard.password}}
+        stats uri  {{haproxy_monitoring_config.uri}}
         http-request use-service prometheus-exporter if { path /metrics }

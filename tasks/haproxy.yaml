@@ -4,8 +4,8 @@
         path: "{{ item }}"
         state: directory
       with_items:
-        - '{{ haproxy_home_dir }}'
-        - '{{ haproxy_home_dir }}/config'
+        - '{{ haproxy_config.home_dir }}'
+        - '{{ haproxy_config.home_dir }}/config'
 
     - name: Add docker-compose and config toml files
       template:
@@ -13,18 +13,18 @@
         dest: '{{ item.dest }}'
       loop:
         - src: docker-compose.yaml.j2
-          dest: '{{ haproxy_home_dir }}/docker-compose.yaml'
+          dest: '{{ haproxy_config.home_dir }}/docker-compose.yaml'
         - src: haproxy.cfg.j2
-          dest: '{{ haproxy_home_dir }}/config/haproxy.cfg'
+          dest: '{{ haproxy_config.home_dir }}/config/haproxy.cfg'
 
     - name: Run docker compose
-      command: chdir='{{ haproxy_home_dir }}' docker compose up -d
+      command: chdir='{{ haproxy_config.home_dir }}' docker compose up -d --force-recreate
   when: haproxy_install_type == 'docker-compose'
 
 - block:
     - name: Add HAProxy repository key
       ansible.builtin.apt_repository:
-        repo: ppa:vbernat/haproxy-{{haproxy_version}}
+        repo: ppa:vbernat/haproxy-{{haproxy_config.version}}
         update_cache: yes
         
     - name: Install HAProxy
