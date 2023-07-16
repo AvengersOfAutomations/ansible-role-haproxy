@@ -30,6 +30,9 @@
 
     - name: Run docker compose
       command: chdir='{{ haproxy_global.home_dir }}' docker compose up -d --force-recreate
+    
+    # - name: restart docker container gracfully 
+    #   command: docker kill -s HUP haproxy
   when: haproxy_install_type == 'docker-compose'
 
 - block:

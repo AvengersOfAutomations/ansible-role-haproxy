@@ -9,7 +9,7 @@ vrrp_script chk_haproxy {
 vrrp_instance {{vrrp_instance.vrrp_instance_name}} {
     interface {{ vrrp_ip_interface }}
     state {{ vrrp_state }}
-    priority {{ vrrp_priority }}
+    priority {{ vrrp_instance.vrrp_priority }}
     virtual_router_id {{ vrrp_instance.virtual_router_id }}
 
     authentication {

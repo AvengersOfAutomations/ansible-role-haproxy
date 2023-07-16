@@ -1,0 +1,16 @@
+- name: enable/disable ufw
+  community.general.ufw:
+    state: '{{ ufw_state }}'
+
+- name: Allow all access from trust networks to this host
+  community.general.ufw:
+    rule: '{{ item.rule }}'
+    src: '{{ item.src }}'
+  loop: '{{ ufw_rules }}'
+
+- name: Allow all access to trust ports
+  community.general.ufw:
+    rule: '{{ item.rule }}'
+    port: '{{ item.port }}'
+    proto: '{{ item.proto }}'
+  loop: '{{ ufw_ports }}'

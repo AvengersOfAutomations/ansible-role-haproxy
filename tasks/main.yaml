@@ -17,3 +17,8 @@
   import_tasks: keepalived.yaml
   when: keepalived == true
   tags: [ keepalived ]
+
+- name: Install and configure ufw
+  import_tasks: ufw.yaml
+  when: ufw == true
+  tags: [ ufw ]
