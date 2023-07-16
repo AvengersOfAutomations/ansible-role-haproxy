@@ -18,36 +18,31 @@ keepalived_exporter: true
 Haproxy could install with docker container or linux service
 
 ```yaml
-haproxy_install_type: service # service / docker-compose
-haproxy_health_check_port: 8888
+haproxy_install_type: docker-compose # service / docker-compose
+
 # Golabal configs
 haproxy_global:
-  user: haproxy
-  group: haproxy
-  chroot: /var/lib/haproxy
   home_dir: /opt/haproxy
-  version: 2.8
+  version: 2.6
   maxconn: 300000
-# dashboard config
+
+# Dashboard config
 haproxy_dashboard:
   user: admin
   password: admin
+
 # Haproxy timeout configs
 haproxy_timeout:
-  connect: 5000
-  client: 50000
-  server: 50000
+  connect: 30s
+  client: 60s
+  server: 60s
+
 # Haproxy monitoring configs
 haproxy_monitoring_config:
   port: 9090
-  uri: /haproxy?stats
+  uri: /stats
   refresh: 10s
-  maxconn: 100
-  timeout:
-    client: 300s
-    server: 300s
-    connect: 300s
-    queue: 300s
+
 # Haproxy logging configs
 haproxy_logging:
   driver: json-file
@@ -111,6 +106,26 @@ sysctl_config:
   - name: net.core.rmem_max # Set the maximum receive socket buffer size
     value: 104857600
 ...
+```
+
+### UFW Config
+Dynamically Add/Remove Rules and Ports
+```yaml
+ufw_state: enabled # enabled/disabled/reloaded
+
+ufw_rules:
+  - rule: allow
+    src: 172.16.0.0/24
+  - rule: allow
+    src: 172.20.0.0/24
+  
+ufw_ports:
+  - rule: allow
+    port: 80
+    proto: tcp
+  - rule: allow
+    port: 443
+    proto: tcp
 ```
 
 ## Example Playbook
