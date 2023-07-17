@@ -2,6 +2,40 @@
   community.general.ufw:
     state: '{{ ufw_state }}'
 
+- name: Get current UFW rules
+  command: ufw status numbered
+  register: ufw_status
+  changed_when: false
+  check_mode: false
+
+- name: Parse UFW rules
+  set_fact:
+    ufw_current_rules: "{{ ufw_status.stdout_lines | map('regex_findall', '\\b([0-9.]+/[0-9]+)\\b') | flatten }}"
+    ufw_current_ports: "{{ ufw_status.stdout_lines[2:] | map('regex_findall', '([0-9]+)/\\S+\\s+ALLOW IN') | flatten | map('int') | list }}"
+
+- name: delete unused rules
+  ufw:
+    delete: true
+    rule: allow
+    src: '{{ item }}'
+  loop: '{{ ufw_current_rules | difference(ufw_rules | map(attribute="src")) }}'
+
+- name: delete unused ports
+  ufw:
+    delete: true
+    rule: allow
+    port: '{{ item }}'
+    proto: tcp
+  loop: '{{ ufw_current_ports | difference(ufw_ports | map(attribute="port")) }}'
+
+- name: Get Rules
+  debug:
+    msg: '{{ufw_current_rules}}'
+
+- name: Get Ports
+  debug:
+    msg: '{{ufw_current_ports}}'
+
 - name: Allow all access from trust networks to this host
   community.general.ufw:
     rule: '{{ item.rule }}'

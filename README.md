@@ -12,6 +12,7 @@ keepalived: true
 sysctl_tuning: true
 haproxy_exporter: true
 keepalived_exporter: true
+ufw: true
 ```
 
 ### Haproxy Config

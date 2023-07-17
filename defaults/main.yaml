@@ -133,9 +133,9 @@ ufw_state: enabled # enabled/disabled/reloaded
 
 ufw_rules:
   - rule: allow
-    src: 172.16.0.0/24
+    src: 172.16.0.0/16
   - rule: allow
-    src: 172.20.0.0/24
+    src: 172.20.0.0/16
   
 ufw_ports:
   - rule: allow
