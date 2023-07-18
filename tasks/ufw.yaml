@@ -20,7 +20,7 @@
     src: '{{ item }}'
   loop: '{{ ufw_current_rules | difference(ufw_rules | map(attribute="src")) }}'
 
-- name: delete unused ports
+- name: delete unused TCP ports
   ufw:
     delete: true
     rule: allow
@@ -28,13 +28,13 @@
     proto: tcp
   loop: '{{ ufw_current_ports | difference(ufw_ports | map(attribute="port")) }}'
 
-- name: Get Rules
-  debug:
-    msg: '{{ufw_current_rules}}'
-
-- name: Get Ports
-  debug:
-    msg: '{{ufw_current_ports}}'
+- name: delete unused UDP ports
+  ufw:
+    delete: true
+    rule: allow
+    port: '{{ item }}'
+    proto: udp
+  loop: '{{ ufw_current_ports | difference(ufw_ports | map(attribute="port")) }}'
 
 - name: Allow all access from trust networks to this host
   community.general.ufw:
