@@ -30,10 +30,6 @@
       apt:
         name: [docker-ce, docker-ce-cli, containerd.io, docker-buildx-plugin, docker-compose-plugin]
         update_cache: yes
-
-    - name: Start and enable docker
-      systemd:
-        name: docker.service
-        state: started
-        enabled: true
+      notify:
+       - Start and Enable docker
   when: docker_installed == false

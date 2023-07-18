@@ -15,3 +15,9 @@
     enabled: yes
     daemon_reload: yes
     name: keepalived-exporter.service
+
+- name: Start and Enable docker
+  systemd:
+    name: docker.service
+    state: started
+    enabled: true
