@@ -121,6 +121,8 @@ sysctl_config:
     value: 65535  
   - name: net.core.netdev_max_backlog # Set the maximum number of queued packets on network interfaces
     value: 16384
+  - name: net.ipv4.ip_nonlocal_bind # This allows software to bind to addresses that aren't currently available on the host.
+    value: 1
 
 sysctl_ufw_config:
   - name: net.netfilter.nf_conntrack_max

@@ -1,5 +1,5 @@
 vrrp_script chk_haproxy {
-    script {{vrrp_script_chk_haproxy.script}}
+    script "{{vrrp_script_chk_haproxy.script}}"
     interval {{vrrp_script_chk_haproxy.interval}}
     weight {{vrrp_script_chk_haproxy.weight}}
 }
