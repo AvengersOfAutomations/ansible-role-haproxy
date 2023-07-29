@@ -1,4 +1,4 @@
-# Ansible Playbook For Setup (Haproxy, Keepalived)
+# Ansible Role For Setup (Haproxy, Keepalived)
 
 ## Roles Variables
 
