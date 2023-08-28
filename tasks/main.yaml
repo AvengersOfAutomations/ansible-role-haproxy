@@ -1,24 +1,29 @@
 - name: Install docker, compose
   import_tasks: docker.yaml
   when: docker == true
-  tags: [ docker ]
+  tags: [docker]
 
 - name: Configure sysctl parameters for tuning
   import_tasks: sysctl.yaml
   when: sysctl_tuning == true
-  tags: [ sysctl_tuning ]
+  tags: [sysctl_tuning]
 
 - name: Install and configure haproxy
   import_tasks: haproxy.yaml
   when: haproxy == true
-  tags: [ haproxy ]
+  tags: [haproxy]
 
 - name: Install and configure keepalived
   import_tasks: keepalived.yaml
   when: keepalived == true
-  tags: [ keepalived ]
+  tags: [keepalived]
 
 - name: Install and configure ufw
   import_tasks: ufw.yaml
   when: ufw == true
-  tags: [ ufw ]
+  tags: [ufw]
+
+- name: Install Data Plane API
+  import_tasks: data-plane-api.yaml
+  when: data_plane_api == true
+  tags: [data_plane_api]

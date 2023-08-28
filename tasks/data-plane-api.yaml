@@ -1,0 +1,11 @@
+- block:
+    - name: Download dataplaneapi binary file
+      get_url:
+        url: https://github.com/haproxytech/dataplaneapi/releases/download/v{{ haproxy_global.version }}/dataplaneapi_{{ haproxy_global.version }}_linux_amd64.deb
+        dest: /tmp/dataplaneapi_{{ haproxy_global.version }}_linux_amd64.deb
+        mode: 0644
+    - name: Install dataplaneapi binary file
+      apt:
+        deb: "/tmp/dataplaneapi_{{ haproxy_global.version }}_linux_amd64.deb"
+        state: present
+  when: haproxy_install_type == 'service'

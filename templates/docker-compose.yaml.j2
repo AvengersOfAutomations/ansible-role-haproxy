@@ -1,10 +1,10 @@
 version: "3.9"
 services:
     haproxy:
-        image: haproxy:{{ haproxy_global.version }}
+        image: haproxytech/haproxy-debian:{{ haproxy_global.version }}
         container_name: haproxy
         volumes:
-            - ./config:/usr/local/etc/haproxy:ro
+            - ./config:/usr/local/etc/haproxy:rw
         network_mode: host
         user: root
         restart: always

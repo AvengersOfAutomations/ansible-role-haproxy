@@ -8,11 +8,11 @@ Choose which tools install on your host
 ```yaml
 docker: true
 haproxy: true
-keepalived: true
-sysctl_tuning: true
-haproxy_exporter: true
-keepalived_exporter: true
-ufw: true
+keepalived: false
+sysctl_tuning: false
+haproxy_exporter: false
+keepalived_exporter: false
+ufw: false
 ```
 
 ### Haproxy Config
@@ -84,6 +84,22 @@ keepalived_exporter_config:
   version: 1.3.0
   port: 9165
   path: /metrics
+```
+
+### Data Plane API Config
+```yaml
+dataplaneapi:
+  user: admin
+  password: adminpwd
+  api:
+    command: /usr/bin/dataplaneapi
+    host: 0.0.0.0
+    port: 5555
+    haproxy_bin: /usr/sbin/haproxy
+    config_file: /usr/local/etc/haproxy/haproxy.cfg
+    reload_cmd: "kill -SIGUSR2 1"
+    restart_cmd: "kill -SIGUSR2 1"
+    reload_delay: 5
 ```
 
 ### Sysctl Config

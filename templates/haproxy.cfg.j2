@@ -20,3 +20,12 @@ listen  stats
 {% if haproxy_exporter %}
         http-request use-service prometheus-exporter if { path /metrics }
 {% endif %}
+
+{% if data_plane_api %}
+userlist haproxy-dataplaneapi
+  user {{dataplaneapi.user}} insecure-password {{dataplaneapi.password}}
+
+program api
+  command {{dataplaneapi.api.command}} --host {{dataplaneapi.api.host}} --port {{dataplaneapi.api.port}} --haproxy-bin {{dataplaneapi.api.haproxy_bin}} --config-file {{dataplaneapi.api.config_file}} --reload-cmd "{{dataplaneapi.api.reload_cmd}}" --restart-cmd "{{dataplaneapi.api.restart_cmd}}" --reload-delay {{dataplaneapi.api.reload_delay}} --userlist haproxy-dataplaneapi
+  no option start-on-reload
+{% endif %}
