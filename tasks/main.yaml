@@ -24,6 +24,6 @@
   tags: [ufw]
 
 - name: Install Data Plane API
-  import_tasks: data-plane-api.yaml
+  import_tasks: dataplaneapi.yaml
   when: data_plane_api == true
   tags: [data_plane_api]

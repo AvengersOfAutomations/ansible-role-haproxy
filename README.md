@@ -1,4 +1,9 @@
-# Ansible Role For Setup (Haproxy, Keepalived, Data Plane API)
+<p align="center">
+  <a href="https://github.com/SepehrImanian/terraform-provider-haproxy">
+    <img src="./assets/haproxy.png" alt="minio-provider-terraform" width="200">
+  </a>
+  <h1 align="center" style="font-weight: bold">Ansible Role For Setup (Haproxy, Keepalived, Data Plane API)</h1>
+</p>
 
 ## Roles Variables
 
@@ -8,11 +13,12 @@ Choose which tools install on your host
 ```yaml
 docker: true
 haproxy: true
-keepalived: false
-sysctl_tuning: false
-haproxy_exporter: false
-keepalived_exporter: false
-ufw: false
+keepalived: true
+sysctl_tuning: true
+haproxy_exporter: true
+keepalived_exporter: true
+data_plane_api: true
+ufw: true
 ```
 
 ### Haproxy Config
